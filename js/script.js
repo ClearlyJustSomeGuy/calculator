@@ -14,35 +14,51 @@ function divide(numOne, numTwo) {
 
 function operate(numOne, numTwo, operator) {
     switch (operator) {
-        case '+':
+        case 'plus':
             return add(numOne, numTwo);
-        case '-':
+        case 'minus':
             return subtract(numOne, numTwo);
-        case '*':
+        case 'multiply':
             return multiply(numOne, numTwo);
-        case '/':
+        case 'divide':
             return divide(numOne, numTwo);
     }
 }
 
 let displayNum = [];
 let opArr = ['plus', 'minus', 'multiply', 'divide'];
+let currentValue = null;
+let currentOp = '';
 
 // Key presses by storing each number into an array using push
-function pushNumDisplay(digit) {
+function pushNum(digit) {
     displayNum.push(digit);
-    const display = document.querySelector("#display");
-    display.textContent = displayNum.join('');
+    return displayNum.join('');
+}
+
+function applyOperator(operator) {
+    if (currentValue === null) {
+        currentValue = displayNum.join('');
+        currentOp = operator;
+    } else {
+        currentValue = operate(currentValue, parseInt(displayNum.join('')), currentOp);
+        currentOp = operator;
+        pushToDisplay(currentValue);
+    }
 
 }
 
+function pushToDisplay(str) {
+    const display = document.querySelector("#display");
+    display.textContent = str;
+}
 
 // Grab clicks and parse their values
 const buttons = document.querySelectorAll(".container button");
 buttons.forEach((button => {
     button.addEventListener('click', () => {
         if (parseInt(button.id) >= 0 && parseInt(button.id) <= 9) {
-            pushNumDisplay(button.id);
+            pushToDisplay(pushNum(button.id));
         } else if (opArr.indexOf(button.id) > -1) {
             console.log(button.id);
         } else {
