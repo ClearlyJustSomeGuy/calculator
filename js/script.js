@@ -36,21 +36,47 @@ function pushNum(digit) {
     return displayNum.join('');
 }
 
+// Applying operator with different conditions
 function applyOperator(operator) {
-    if (currentValue === null) {
-        currentValue = displayNum.join('');
+    // If displaynum is empty IE selecting a different operator
+    if (displayNum.length === 0) {
         currentOp = operator;
+    } else if (currentValue === null) { //Check if currentValue
+        currentValue = parseFloat(displayNum.join(''));
+        currentOp = operator;
+        displayNum = [];
+        pushToDisplay('');
     } else {
-        currentValue = operate(currentValue, parseInt(displayNum.join('')), currentOp);
+        currentValue = operate(currentValue, parseFloat(displayNum.join('')), currentOp);
         currentOp = operator;
         pushToDisplay(currentValue);
+        displayNum = [];
     }
 
 }
 
+// Push any string to the display div
 function pushToDisplay(str) {
     const display = document.querySelector("#display");
     display.textContent = str;
+}
+
+// Clear display and reset variables
+function clearAll() {
+    displayNum = [];
+    currentValue = null;
+    currentOp = '';
+    const display = document.querySelector("#display");
+    display.textContent = displayNum;
+}
+
+// Equal function to complete operations
+function doEqual() {
+    currentValue = operate(currentValue, parseFloat(displayNum.join('')), currentOp);
+    pushToDisplay(currentValue);
+    displayNum = String(currentValue).split("");
+    currentOp = '';
+    currentValue = null;
 }
 
 // Grab clicks and parse their values
@@ -60,14 +86,12 @@ buttons.forEach((button => {
         if (parseInt(button.id) >= 0 && parseInt(button.id) <= 9) {
             pushToDisplay(pushNum(button.id));
         } else if (opArr.indexOf(button.id) > -1) {
+            applyOperator(button.id);
+        } else if (button.id === 'equals') {
             console.log(button.id);
+            doEqual();
         } else {
-            console.log(button.id);
+            clearAll();
         }
     })
 }));
-
-// Display array into display div
-const display = document.querySelector("#display");
-// On operator click store number into valueOne and then start adding 
-//      to new variable valueTwo
