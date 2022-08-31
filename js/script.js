@@ -47,12 +47,23 @@ function applyOperator(operator) {
         displayNum = [];
         pushToDisplay('');
     } else {
+        if ((currentOp === 'divide') && (displayNum == 0)) { 
+            sendDivZeroError();
+            return;
+        }
         currentValue = operate(currentValue, parseFloat(displayNum.join('')), currentOp);
         currentOp = operator;
         pushToDisplay(currentValue);
         displayNum = [];
     }
 
+}
+
+// Error response on a div by 0
+function sendDivZeroError() {
+    clearAll();
+    const display = document.querySelector("#display");
+    display.textContent = 'Div by zero err';
 }
 
 // Push any string to the display div
@@ -72,6 +83,10 @@ function clearAll() {
 
 // Equal function to complete operations
 function doEqual() {
+    if ((currentOp === 'divide') && (displayNum == 0)) { 
+        sendDivZeroError();
+        return;
+    }
     currentValue = operate(currentValue, parseFloat(displayNum.join('')), currentOp);
     pushToDisplay(currentValue);
     displayNum = String(currentValue).split("");
