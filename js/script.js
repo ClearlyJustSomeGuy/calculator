@@ -161,6 +161,7 @@ document.addEventListener('keydown', (e) => {
     } else if (opArr.indexOf(e.key) > -1) {
         applyOperator(opArr[opArr.indexOf(e.key) - 4]);
     } else if ((e.key === '=') || (e.key === 'Enter')) {
+        e.preventDefault();
         doEqual();
     } else if (e.key === 'Escape') {
         clearAll();
