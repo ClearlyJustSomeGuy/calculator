@@ -1,8 +1,50 @@
 body {
     background-color: lightslategray;
+    display: flex;
 }
 
 #display {
+    margin-top: 30px;
+    margin-bottom: 15px;
     border: black 1px solid;
     height: 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+.container {
+    margin: auto auto;
+    border: black 1px solid;
+    background-color: lightgray;
+    width: 400px;
+    height: 700px;
+    border-radius: 8px;
+}
+
+.operators {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 5x;
+    margin: 15x;
+}
+
+.numbers {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+    margin: 15px;
+}
+
+.zero {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+.bottom {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5px;
+    margin: 15px;
 }
