@@ -27,8 +27,17 @@ let currentOp = '';
 
 // Key presses by storing each number into an array using push
 function pushNum(digit) {
+    if (digit === '.' && displayNum.indexOf('.') > -1) {
+        return displayNum.join('');
+    }
     displayNum.push(digit);
     displayNum = limitDisplayLength(displayNum);
+    return displayNum.join('');
+}
+
+// Backspace function
+function removeDigit() {
+    displayNum.pop();
     return displayNum.join('');
 }
 
@@ -147,8 +156,10 @@ buttons.forEach((button => {
         } else if (button.id === 'equals') {
             console.log(button.id);
             doEqual();
-        } else {
+        } else if (button.id === 'clear') {
             clearAll();
+        } else if (button.id === 'backspace') {
+            pushToDisplay(removeDigit());
         }
     })
 }));
@@ -157,8 +168,10 @@ buttons.forEach((button => {
 // Keyboard entry
 document.addEventListener('keydown', (e) => {
     console.log(e.key);
-    if ((e.key >= 0 && e.key <=9) || e.key === '.') {
-        document.getElementById(`${e.key}`).click();
+    if (e.key === ' ') {
+        return;
+    } else if ((e.key >= 0 && e.key <=9) || e.key === '.') {
+        pushToDisplay(pushNum(e.key));
     } else if (opArr.indexOf(e.key) > -1) {
         applyOperator(opArr[opArr.indexOf(e.key) - 4]);
     } else if ((e.key === '=') || (e.key === 'Enter')) {
@@ -166,5 +179,7 @@ document.addEventListener('keydown', (e) => {
         doEqual();
     } else if (e.key === 'Escape') {
         clearAll();
+    } else if (e.key === 'Backspace') {
+        pushToDisplay(removeDigit());
     }
 });
