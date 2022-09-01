@@ -157,7 +157,7 @@ buttons.forEach((button => {
 // Keyboard entry
 document.addEventListener('keydown', (e) => {
     console.log(e.key);
-    if (e.key >= 0 && e.key <=9) {
+    if ((e.key >= 0 && e.key <=9) || e.key === '.') {
         document.getElementById(`${e.key}`).click();
     } else if (opArr.indexOf(e.key) > -1) {
         applyOperator(opArr[opArr.indexOf(e.key) - 4]);
