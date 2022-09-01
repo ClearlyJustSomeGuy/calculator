@@ -26,7 +26,7 @@ function operate(numOne, numTwo, operator) {
 }
 
 let displayNum = [];
-let opArr = ['plus', 'minus', 'multiply', 'divide'];
+let opArr = ['plus', 'minus', 'multiply', 'divide', '+', '-', '*', '/'];
 let currentValue = null;
 let currentOp = '';
 
@@ -42,11 +42,12 @@ function applyOperator(operator) {
     // If displaynum is empty IE selecting a different operator
     if (displayNum.length === 0) {
         currentOp = operator;
+        pushToDisplay(opArr[opArr.indexOf(operator) + 4]);
     } else if (currentValue === null) { //Check if currentValue
         currentValue = parseFloat(displayNum.join(''));
         currentOp = operator;
         displayNum = [];
-        pushToDisplay('');
+        pushToDisplay(opArr[opArr.indexOf(operator) + 4]);
     } else {
         if ((currentOp === 'divide') && (displayNum == 0)) { 
             sendDivZeroError();
@@ -66,7 +67,7 @@ function applyOperator(operator) {
 function sendDivZeroError() {
     clearAll();
     const display = document.querySelector("#display");
-    display.textContent = 'Div by zero err';
+    display.textContent = 'ERR, DIV ZERO';
 }
 
 // Push any string to the display div
