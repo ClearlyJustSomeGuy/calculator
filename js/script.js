@@ -1,3 +1,12 @@
+let displayNum = [];
+let opArr = ['plus', 'minus', 'multiply', 'divide', '+', '-', '*', '/'];
+let currentValue = null;
+let currentOp = '';
+let operationComplete = false;
+
+
+
+// ***** Math Functions 
 function add(numOne, numTwo) {return numOne + numTwo;}
 
 function subtract(numOne, numTwo) {return numOne - numTwo;}
@@ -20,11 +29,8 @@ function operate(numOne, numTwo, operator) {
     }
 }
 
-let displayNum = [];
-let opArr = ['plus', 'minus', 'multiply', 'divide', '+', '-', '*', '/'];
-let currentValue = null;
-let currentOp = '';
 
+// ******* Adjust number on screen functions******
 // Key presses by storing each number into an array using push
 function pushNum(digit) {
     if (digit === '.' && displayNum.indexOf('.') > -1) {
@@ -41,6 +47,14 @@ function removeDigit() {
     return displayNum.join('');
 }
 
+// Push any string to the display div
+function pushToDisplay(str) {
+    const display = document.querySelector("#display");
+    display.textContent = str;
+}
+
+
+// ******* Conditional operations function
 // Applying operator with different conditions
 function applyOperator(operator) {
     // If displaynum is empty IE selecting a different operator
@@ -73,28 +87,6 @@ function applyOperator(operator) {
 
 }
 
-// Error response on a div by 0
-function sendDivZeroError() {
-    clearAll();
-    const display = document.querySelector("#display");
-    display.textContent = 'ERR, DIV ZERO';
-}
-
-// Push any string to the display div
-function pushToDisplay(str) {
-    const display = document.querySelector("#display");
-    display.textContent = str;
-}
-
-// Clear display and reset variables
-function clearAll() {
-    displayNum = [];
-    currentValue = null;
-    currentOp = '';
-    const display = document.querySelector("#display");
-    display.textContent = displayNum;
-}
-
 // Equal function to complete operations
 function doEqual() {
     if ((currentOp === 'divide') && (displayNum == 0)) { 
@@ -117,6 +109,27 @@ function doEqual() {
     currentValue = null;
 }
 
+
+// Error response on a div by 0
+function sendDivZeroError() {
+    clearAll();
+    const display = document.querySelector("#display");
+    display.textContent = 'ERR, DIV ZERO';
+}
+
+
+// Clear display and reset variables
+function clearAll() {
+    displayNum = [];
+    currentValue = null;
+    currentOp = '';
+    operationComplete = false;
+    const display = document.querySelector("#display");
+    display.textContent = displayNum;
+}
+
+
+// ******* Length functions
 function limitDisplayLength(arr) {
     if (arr.length > 13) {
         arr.shift();
@@ -133,7 +146,6 @@ function trimLength(arr) {
         let trim  = arr.length - 13;
         let decimals = arr.length - arr.indexOf('.') - 1;
         let round = decimals - trim;
-        console.log(`length = ${arr.length}, trim = ${trim}, decimals = ${decimals}, round = ${round}, new length = ${parseFloat(arr).toFixed(round).length}`);
         return parseFloat(arr).toFixed(round);
     }
     return arr;
