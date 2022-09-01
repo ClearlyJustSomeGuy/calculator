@@ -33,6 +33,7 @@ let currentOp = '';
 // Key presses by storing each number into an array using push
 function pushNum(digit) {
     displayNum.push(digit);
+    displayNum = limitInitialLength(displayNum);
     return displayNum.join('');
 }
 
@@ -51,7 +52,8 @@ function applyOperator(operator) {
             sendDivZeroError();
             return;
         }
-        currentValue = operate(currentValue, parseFloat(displayNum.join('')), currentOp);
+        currentValue = operate(currentValue, parseFloat(displayNum.join('')), 
+                        currentOp);
         currentOp = operator;
         pushToDisplay(currentValue);
         displayNum = [];
@@ -93,6 +95,35 @@ function doEqual() {
     currentOp = '';
     currentValue = null;
 }
+
+
+function limitInitialLength(arr) {
+    if (arr.length > 13) {
+        arr.shift();
+        return arr;
+    }
+    return arr;
+}
+
+function trimLength(arr) {
+    // Check if > 13 and has decimal
+    if (arr.indexOf('.') > 12) {
+        return "Num too large";
+    } else if (arr.length > 13 && arr.indexOf('.') > -1) {
+        let trim  = arr.length - 13;
+        let decimals = arr.length - arr.indexOf('.') - 1;
+        let round = decimals - trim;
+        console.log(`length = ${arr.length}, trim = ${trim}, decimals = ${decimals}, round = ${round}, new length = ${parseFloat(arr).toFixed(round).length}`);
+        return parseFloat(arr).toFixed(round);
+    }
+    return arr;
+}
+
+
+
+
+
+
 
 // Grab clicks and parse their values
 const buttons = document.querySelectorAll(".container button");
