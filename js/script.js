@@ -135,7 +135,7 @@ function trimLength(arr) {
 
 
 
-
+// ******************** Listeners **************************
 // Grab clicks and parse their values
 const buttons = document.querySelectorAll(".container button");
 buttons.forEach((button => {
@@ -152,3 +152,18 @@ buttons.forEach((button => {
         }
     })
 }));
+
+
+// Keyboard entry
+document.addEventListener('keyup', (e) => {
+    console.log(e.key);
+    if (e.key >= 0 && e.key <=9) {
+        pushToDisplay(pushNum(e.key));
+    } else if (opArr.indexOf(e.key) > -1) {
+        applyOperator(opArr[opArr.indexOf(e.key) - 4]);
+    } else if (e.key === '=' || e.key === 'Enter') {
+        doEqual();
+    } else if (e.key === 'Escape') {
+        clearAll();
+    }
+});
