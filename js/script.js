@@ -139,7 +139,8 @@ function trimLength(arr) {
 const buttons = document.querySelectorAll(".container button");
 buttons.forEach((button => {
     button.addEventListener('click', () => {
-        if (parseInt(button.id) >= 0 && parseInt(button.id) <= 9) {
+        if ((parseInt(button.id) >= 0 && parseInt(button.id) <= 9) || 
+            button.id === '.') {
             pushToDisplay(pushNum(button.id));
         } else if (opArr.indexOf(button.id) > -1) {
             applyOperator(button.id);
