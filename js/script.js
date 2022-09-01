@@ -55,6 +55,7 @@ function applyOperator(operator) {
         currentValue = operate(currentValue, parseFloat(displayNum.join('')), 
                         currentOp);
         currentOp = operator;
+        currentValue = parseFloat(trimLength(String(currentValue)));
         pushToDisplay(currentValue);
         displayNum = [];
     }
@@ -88,8 +89,11 @@ function doEqual() {
     if ((currentOp === 'divide') && (displayNum == 0)) { 
         sendDivZeroError();
         return;
+    } else if (displayNum.length === 0) {
+        return;
     }
     currentValue = operate(currentValue, parseFloat(displayNum.join('')), currentOp);
+    currentValue = parseFloat(trimLength(String(currentValue)));
     pushToDisplay(currentValue);
     displayNum = String(currentValue).split("");
     currentOp = '';
