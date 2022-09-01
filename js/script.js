@@ -5,11 +5,6 @@ function subtract(numOne, numTwo) {return numOne - numTwo;}
 function multiply(numOne, numTwo) {return numOne * numTwo;}
 
 function divide(numOne, numTwo) {
-    if (numTwo === 0) {
-        const display = document.querySelector("#display");
-        display.textContent = 'Div by zero err';
-        return;
-    }
     return numOne / numTwo;}
 
 function operate(numOne, numTwo, operator) {
@@ -33,7 +28,7 @@ let currentOp = '';
 // Key presses by storing each number into an array using push
 function pushNum(digit) {
     displayNum.push(digit);
-    displayNum = limitInitialLength(displayNum);
+    displayNum = limitDisplayLength(displayNum);
     return displayNum.join('');
 }
 
@@ -56,7 +51,13 @@ function applyOperator(operator) {
         currentValue = operate(currentValue, parseFloat(displayNum.join('')), 
                         currentOp);
         currentOp = operator;
-        currentValue = parseFloat(trimLength(String(currentValue)));
+        currentValue = trimLength(String(currentValue));
+        if (currentValue === 'LENGTH ERR') {
+            pushToDisplay(currentValue);
+            return;
+        } else {
+            currentValue = parseFloat(currentValue);
+        }
         pushToDisplay(currentValue);
         displayNum = [];
     }
@@ -90,11 +91,17 @@ function doEqual() {
     if ((currentOp === 'divide') && (displayNum == 0)) { 
         sendDivZeroError();
         return;
-    } else if (displayNum.length === 0) {
+    } else if (displayNum.length === 0 || currentOp.length === 0) {
         return;
     }
     currentValue = operate(currentValue, parseFloat(displayNum.join('')), currentOp);
-    currentValue = parseFloat(trimLength(String(currentValue)));
+    currentValue = trimLength(String(currentValue));
+    if (currentValue === 'LENGTH ERR') {
+        pushToDisplay(currentValue);
+        return;
+    } else {
+        currentValue = parseFloat(currentValue);
+    }
     pushToDisplay(currentValue);
     displayNum = String(currentValue).split("");
     currentOp = '';
@@ -102,7 +109,7 @@ function doEqual() {
 }
 
 
-function limitInitialLength(arr) {
+function limitDisplayLength(arr) {
     if (arr.length > 13) {
         arr.shift();
         return arr;
@@ -112,8 +119,8 @@ function limitInitialLength(arr) {
 
 function trimLength(arr) {
     // Check if > 13 and has decimal
-    if (arr.indexOf('.') > 12) {
-        return "Num too large";
+    if (arr.indexOf('.') > 12 || arr.length > 13) {
+        return 'LENGTH ERR';
     } else if (arr.length > 13 && arr.indexOf('.') > -1) {
         let trim  = arr.length - 13;
         let decimals = arr.length - arr.indexOf('.') - 1;
@@ -123,7 +130,6 @@ function trimLength(arr) {
     }
     return arr;
 }
-
 
 
 
