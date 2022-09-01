@@ -108,7 +108,6 @@ function doEqual() {
     currentValue = null;
 }
 
-
 function limitDisplayLength(arr) {
     if (arr.length > 13) {
         arr.shift();
@@ -119,7 +118,7 @@ function limitDisplayLength(arr) {
 
 function trimLength(arr) {
     // Check if > 13 and has decimal
-    if (arr.indexOf('.') > 12 || arr.length > 13) {
+    if (arr.indexOf('.') > 12 || (!arr.includes('.') && arr.length > 13)) {
         return 'LENGTH ERR';
     } else if (arr.length > 13 && arr.indexOf('.') > -1) {
         let trim  = arr.length - 13;
