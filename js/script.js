@@ -5,7 +5,6 @@ let currentOp = '';
 let operationComplete = false;
 
 
-
 // ***** Math Functions 
 function add(numOne, numTwo) {return numOne + numTwo;}
 
@@ -150,9 +149,6 @@ function trimLength(arr) {
     }
     return arr;
 }
-
-
-
 
 
 // ******************** Listeners **************************

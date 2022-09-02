@@ -28,7 +28,7 @@ button:active {
   }
 
 #display {
-    margin-top: 30px;
+    margin-top: 15px;
     margin-bottom: 15px;
     border: black 1px solid;
     height: 60px;
@@ -58,6 +58,7 @@ button:active {
     grid-template-columns: auto auto auto auto;
     gap: 5px;
     margin: 5px;
+    margin-bottom: 15px;
 }
 
 .operators button {
