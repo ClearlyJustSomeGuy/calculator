@@ -2,7 +2,7 @@ let displayNum = [];
 let opArr = ['plus', 'minus', 'multiply', 'divide', '+', '-', '*', '/'];
 let currentValue = null;
 let currentOp = '';
-let operationComplete = false;
+let disableDigits = false;
 
 
 // ***** Math Functions 
@@ -60,14 +60,17 @@ function applyOperator(operator) {
     if (displayNum.length === 0) {
         currentOp = operator;
         pushToDisplay(opArr[opArr.indexOf(operator) + 4]);
+        disableDigits = false;
     } else if (currentValue === null) { //Check if currentValue
         currentValue = parseFloat(displayNum.join(''));
         currentOp = operator;
         displayNum = [];
         pushToDisplay(opArr[opArr.indexOf(operator) + 4]);
-    } else {
+        disableDigits = false;
+    } else { //Div zero response
         if ((currentOp === 'divide') && (displayNum == 0)) { 
             sendDivZeroError();
+            disableDigits = true;
             return;
         }
         currentValue = operate(currentValue, parseFloat(displayNum.join('')), 
@@ -76,6 +79,7 @@ function applyOperator(operator) {
         currentValue = trimLength(String(currentValue));
         if (currentValue === 'LENGTH ERR') {
             pushToDisplay(currentValue);
+            disableDigits = true;
             return;
         } else {
             currentValue = parseFloat(currentValue);
@@ -90,6 +94,7 @@ function applyOperator(operator) {
 function doEqual() {
     if ((currentOp === 'divide') && (displayNum == 0)) { 
         sendDivZeroError();
+        disableDigits = true;
         return;
     } else if (displayNum.length === 0 || currentOp.length === 0) {
         return;
@@ -98,6 +103,7 @@ function doEqual() {
     currentValue = trimLength(String(currentValue));
     if (currentValue === 'LENGTH ERR') {
         pushToDisplay(currentValue);
+        disableDigits = true;
         return;
     } else {
         currentValue = parseFloat(currentValue);
@@ -106,6 +112,7 @@ function doEqual() {
     displayNum = String(currentValue).split("");
     currentOp = '';
     currentValue = null;
+    disableDigits = true;
 }
 
 
@@ -122,7 +129,7 @@ function clearAll() {
     displayNum = [];
     currentValue = null;
     currentOp = '';
-    operationComplete = false;
+    disableDigits = false;
     const display = document.querySelector("#display");
     display.textContent = displayNum;
 }
@@ -158,6 +165,7 @@ buttons.forEach((button => {
     button.addEventListener('click', () => {
         if ((parseInt(button.id) >= 0 && parseInt(button.id) <= 9) || 
             button.id === '.') {
+                if (disableDigits) return;
             pushToDisplay(pushNum(button.id));
         } else if (opArr.indexOf(button.id) > -1) {
             applyOperator(button.id);
@@ -167,6 +175,7 @@ buttons.forEach((button => {
         } else if (button.id === 'clear') {
             clearAll();
         } else if (button.id === 'backspace') {
+            if (disableDigits) return;
             pushToDisplay(removeDigit());
         }
     })
@@ -179,6 +188,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === ' ') {
         return;
     } else if ((e.key >= 0 && e.key <=9) || e.key === '.') {
+        if (disableDigits) return;
         pushToDisplay(pushNum(e.key));
     } else if (opArr.indexOf(e.key) > -1) {
         applyOperator(opArr[opArr.indexOf(e.key) - 4]);
@@ -188,6 +198,7 @@ document.addEventListener('keydown', (e) => {
     } else if (e.key === 'Escape') {
         clearAll();
     } else if (e.key === 'Backspace') {
+        if (disableDigits) return;
         pushToDisplay(removeDigit());
     }
 });
